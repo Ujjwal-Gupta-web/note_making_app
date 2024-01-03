@@ -6,6 +6,6 @@ const router = express.Router();
 // /api/search
 
 // GET ROUTES
-router.get('/',authMiddleware,SearchController.searchNote);
+router.get('',authMiddleware,SearchController.searchNote);
 
 module.exports=router;
