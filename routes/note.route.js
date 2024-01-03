@@ -7,12 +7,13 @@
 // GET /api/search?q=:query: search for notes based on keywords for the authenticated user.
 
 const express = require("express");
+const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
-// authMiddleware for all routes
-router.get('/api/notes',NoteController.getAllNotes)
-router.get('/api/notes/:id',NoteController.getNoteByNoteId)
-router.post('/api/notes',NoteController.addNote)
-router.put('/api/notes/:id',NoteController.updtateNote)
-router.delete('/api/notes/:id',NoteController.deleteNote)
-router.post('/api/notes/:id/share',NoteController.shareNote)
-router.get('/api/search/q=',NoteController.searchNote);
+
+router.get('/api/notes',authMiddleware,NoteController.getAllNotes)
+router.get('/api/notes/:id',authMiddleware,NoteController.getNoteByNoteId)
+router.post('/api/notes',authMiddleware,NoteController.addNote)
+router.put('/api/notes/:id',authMiddleware,NoteController.updtateNote)
+router.delete('/api/notes/:id',authMiddleware,NoteController.deleteNote)
+router.post('/api/notes/:id/share',authMiddleware,NoteController.shareNote)
+router.get('/api/search/q=',authMiddleware,NoteController.searchNote);
