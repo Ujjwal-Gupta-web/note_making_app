@@ -28,9 +28,10 @@ const NoteController = {
                 { author: req.user.id }, { allowedAccess: { $in: [req.user.id] } }
             ] }).populate({path:'author',select:'email'}).populate({path:'allowedAccess',select:'email'});
             if (!note) note = {};
-            note=note
-            if(note.author!==req.user.id){
-                delete note['allowedAccess'];
+            if((note.author._id.toString())!==(req.user.id)){
+                note={
+                    _id:note._id,title:note.title,desc:note.desc,author:note.author
+                }
             }
             return res.json({ data: {note:note}, tag: true });
         }
