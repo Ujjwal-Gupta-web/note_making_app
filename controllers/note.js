@@ -7,14 +7,15 @@ const NoteController = {
 
     getAllNotes: async (req, res) => {
         try {
-            const notes = await User.find({ author: req.user.id });
-            const sharedWithMe = await User.find({ allowedAccess: { $contains: req.user.id } });
+            const notes = await Note.find({ author: req.user.id });
+            const sharedWithMe =  await Note.findOne({ $and:[{allowedAccess: { $in: [req.user.id] }},{author:{$ne:req.user.id}}]}).select("-allowedAccess").populate({path:'author',select:'email'});
             return res.json({
-                data: { notes, sharedWithMe },
+                data: { notes:notes, sharedWithMe:sharedWithMe?sharedWithMe:[] },
                 tag: true
             })
         }
         catch (err) {
+            console.log(err);
             return res.json({ "message": err, "tag": false })
         }
     },
@@ -23,9 +24,15 @@ const NoteController = {
     getNoteByNoteId: async (req, res) => {
         try {
             const note_id = req.params.id;
-            let note = await User.findOne({ _id: note_id, $or: [{ author: req.user.id }, { allowedAccess: { $contains: req.user.id } }] });
+            let note = await Note.findOne({ _id: note_id, $or: [
+                { author: req.user.id }, { allowedAccess: { $in: [req.user.id] } }
+            ] }).populate({path:'author',select:'email'}).populate({path:'allowedAccess',select:'email'});
             if (!note) note = {};
-            return res.json({ data: note, tag: true });
+            note=note
+            if(note.author!==req.user.id){
+                delete note['allowedAccess'];
+            }
+            return res.json({ data: {note:note}, tag: true });
         }
         catch (err) {
             return res.json({ "message": err, "tag": false })
@@ -35,7 +42,7 @@ const NoteController = {
 
     addNote: async (req, res) => {
         try {
-            const author = req.user._id;
+            const author = req.user.id;
             let allowedAccess = [];
             allowedAccess.push(author);
             const desc = req.body.desc;
@@ -43,6 +50,7 @@ const NoteController = {
             const newNote = new Note({
                 desc,title, author, allowedAccess
             })
+            console.log(newNote);
             await newNote.save().then(() => {
                 return res.json({ "data": newNote, "tag": true })
             }).catch(error => {
@@ -102,48 +110,38 @@ const NoteController = {
 
     shareNote: async (req, res) => {
         try {
-            const note_id=req.params.id;
-            const shareWithEmail=req.body.email;
-            const note=await Note.findOne({_id:note_id,owner:req.user.id});
-            if(note){
-                const shareWith=await User.findOne({email:shareWithEmail});
-                if(shareWith){
-                    let shareWithId=shareWith._id;
-                    let allowedAccess=note.allowedAccess;
-                    let isPresent=allowedAccess.find(((allowedAccessId)=>allowedAccessId==shareWithId));
-                    if(isPresent){
-                        return res.json({tag:true,message:"Already shared"})
-                    }
-                    else{
-                        allowedAccess.push(shareWithId);
-                        note.allowedAccess=allowedAccess;
-                        await note.save().then(() => {
-                            return res.json({ "data": note,"message":"Note shared", "tag": true })
-                        }).catch(error => {
-                            return res.json({
-                                "error": error, "tag": false
-                            })
-                        })
-                    }
-                }
-                else{
-                    return res.json({tag:false,message:"User not found"})
-                }
+            const note_id = req.params.id;
+            const shareWithEmail = req.body.email;
+            const note = await Note.findOne({ _id: note_id, author: req.user.id });
+    
+            if (!note) {
+                return res.json({ tag: false, message: "Note not found or unauthorized" });
             }
-            else return res.json({tag:false,message:"Note not found or unauthorized"});
-
-            await Note.findOneAndDelete({_id:note_id}).then((note) => {
-                if(note)
-                    return res.json({ "message":"Note deleted", "tag": true })
-                return res.json({ "message":"Note not found", "tag": false })
-            }).catch(error => {
-                return res.json({
-                    "error": error, "tag": false
-                })
-            })
-        }
-        catch (err) {
-            return res.json({ "message": err, "tag": false })
+    
+            const shareWith = await User.findOne({ email: shareWithEmail });
+    
+            if (!shareWith) {
+                return res.json({ tag: false, message: "User not found" });
+            }
+    
+            const shareWithId = shareWith._id;
+            const allowedAccess = note.allowedAccess;
+    
+            if (allowedAccess.includes(shareWithId.toString())) {
+                return res.json({ tag: true, message: "Already shared" });
+            }
+    
+            allowedAccess.push(shareWithId);
+            note.allowedAccess = allowedAccess;
+    
+            // Update note
+            await note.save();
+    
+            // Send response after updating the note
+            return res.json({ data: note, message: "Note shared", tag: true });
+        } catch (err) {
+            console.error(err);
+            return res.json({ message: err.message, tag: false });
         }
     }
 }
