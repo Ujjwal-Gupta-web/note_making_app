@@ -11,8 +11,8 @@ const router = express.Router();
 
 router.get('/api/notes')
 router.get('/api/notes/:id')
-router.get('/api/notes')
-router.get('/api/notes/:id')
-router.get('/api/notes/:id')
-router.get('/api/notes/:id/share')
+router.post('/api/notes')
+router.put('/api/notes/:id')
+router.delete('/api/notes/:id')
+router.post('/api/notes/:id/share')
 router.get('/api/search/q=');

@@ -11,6 +11,10 @@ const Note = new Schema({
         required: true ,
         ref: 'Users'
     },
+    allowedAccess:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Users'
+    }]
 });
 
 
