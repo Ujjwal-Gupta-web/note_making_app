@@ -8,11 +8,11 @@
 
 const express = require("express");
 const router = express.Router();
-
-router.get('/api/notes')
-router.get('/api/notes/:id')
-router.post('/api/notes')
-router.put('/api/notes/:id')
-router.delete('/api/notes/:id')
-router.post('/api/notes/:id/share')
-router.get('/api/search/q=');
+// authMiddleware for all routes
+router.get('/api/notes',NoteController.getAllNotes)
+router.get('/api/notes/:id',NoteController.getNoteByNoteId)
+router.post('/api/notes',NoteController.addNote)
+router.put('/api/notes/:id',NoteController.updtateNote)
+router.delete('/api/notes/:id',NoteController.deleteNote)
+router.post('/api/notes/:id/share',NoteController.shareNote)
+router.get('/api/search/q=',NoteController.searchNote);
