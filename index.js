@@ -1,9 +1,9 @@
 const express=require('express');
+require('dotenv').config();
 const mongoose=require('mongoose');
 const cors=require('cors');
 const app=express();
 
-const dotenv=require('dotenv');
 const PORT=process.env.PORT;
 const DB=process.env.DB;
 
@@ -16,11 +16,8 @@ const searchRoutes=require("./routes/search.route.js")
 app.use(express.json());
 app.use(cors());
 
-// .env configuration
-dotenv.config();
-
 // Database connection
-mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+mongoose.connect(DB).then(() => {
     console.log("Database connected.");
 }).catch((err) => {
     console.log("Database error");
@@ -34,4 +31,4 @@ app.use('/api/notes',noteRoutes)
 app.use('/api/search',searchRoutes)
 
 
-app.listen(PORT,()=>console.log("Server up and running"));
+app.listen(PORT,()=>console.log(`Server up and running ${PORT}`));
