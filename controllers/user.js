@@ -7,7 +7,7 @@ const UserController = {
         try {
             const result = await User.findOne({ email: req.body.email });
             if (result) {
-                bcrypt.compare(req.body.pass, result.password, function (err, hashed) {
+                bcrypt.compare(req.body.password, result.password, function (err, hashed) {
                     if (hashed === true) {
                         const token = jwt.sign({ id: result._id }, process.env.SECRET_TOKEN);
                         return res.json({ "message": "Login success", "token": token, "tag": true })
