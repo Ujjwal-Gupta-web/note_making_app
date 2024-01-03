@@ -43,7 +43,6 @@ const UserController = {
                     password: hash
                 })
                 await user.save().then((doc) => {
-                    console.log(doc)
                     return res.json({ "message": "SignUp Success", tag: true })
                 }).catch((err) => { 
                     return res.json({
