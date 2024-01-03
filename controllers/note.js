@@ -52,7 +52,45 @@ const UserController = {
         }
     },
 
-    
+    updateNote: async (req, res) => {
+        try {
+            const note_id=req.params.id;
+            const updatedDesc=req.body.desc;
+            await Note.findOneAndUpdate({_id:note_id}, {desc:updatedDesc}, {
+                returnOriginal: false
+              }).then((updatedNote) => {
+                return res.json({ "data": updatedNote, "tag": true })
+            }).catch(error => {
+                return res.json({
+                    "error": error, "tag": false
+                })
+            })
+        }
+        catch (err) {
+            return res.json({ "message": err, "tag": false })
+        }
+    },
+
+    deleteNote: async (req, res) => {
+        try {
+            const note_id=req.params.id;
+            await Note.findOneAndDelete({_id:note_id}).then((note) => {
+                if(note)
+                    return res.json({ "message":"Note deleted", "tag": true })
+                return res.json({ "message":"Note not found", "tag": false })
+            }).catch(error => {
+                return res.json({
+                    "error": error, "tag": false
+                })
+            })
+        }
+        catch (err) {
+            return res.json({ "message": err, "tag": false })
+        }
+    },
+
+
+
 }
 
 module.exports = UserController;
