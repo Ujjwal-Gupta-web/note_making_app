@@ -8,7 +8,13 @@ const SearchController = {
     searchNote: async (req, res) => {
         try {
             const query=req.query.q;
-            const searchResults = await Note.find({_id:req.user.id, $text: { $search: query } });
+            console.log(query);
+            const searchResults = await Note.find({
+                $and:[
+                    {$or:[{author:req.user.id},{allowedAccess: { $in: [req.user.id] }}]}, {$text: { $search: query } }
+                ]
+            }).populate({path:'author',select:'email'}).populate({path:'allowedAccess',select:'email'});;
+            console.log(searchResults)
             return res.json({tag:true,data:searchResults});
         }
         catch (err) {
