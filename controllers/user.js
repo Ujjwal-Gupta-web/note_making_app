@@ -37,29 +37,29 @@ const UserController = {
                 return res.json({ "message": "User already exists", "tag": false })
             }
             else {
-                var hash = bcrypt.hashSync(req.body.pass, 8);
+                var hash = bcrypt.hashSync(req.body.password, 8);
                 const user = new User({
                     email: req.body.email,
                     password: hash
                 })
-                user.save(function (error, document) {
-                    if (error) {
-                        console.error(error)
-                        return res.json({ "message": "try again", "tag": false })
-                    }
-                    //console.log(document);
+                await user.save().then((doc) => {
+                    console.log(doc)
                     return res.json({ "message": "SignUp Success", tag: true })
+                }).catch((err) => { 
+                    return res.json({
+                        "error": error, "tag": false
+                    }) 
                 })
             }
         }
         catch (err) {
-            return res.json({ "message": err, "tag": false })
+            return res.json({ "error": err, "tag": false })
         }
 
     }
 }
 
-module.exports=UserController;
+module.exports = UserController;
 
 
 
