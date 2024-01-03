@@ -1,8 +1,10 @@
 const Note = require('../models/Note');
+const User = require('../models/User');
 var bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
-const UserController = {
+const NoteController = {
+
     getAllNotes: async (req, res) => {
         try {
             const notes = await User.find({ author: req.user.id });
@@ -30,6 +32,7 @@ const UserController = {
         }
     },
 
+
     addNote: async (req, res) => {
         try {
             const author = req.user._id;
@@ -52,11 +55,12 @@ const UserController = {
         }
     },
 
+
     updateNote: async (req, res) => {
         try {
             const note_id=req.params.id;
             const updatedDesc=req.body.desc;
-            await Note.findOneAndUpdate({_id:note_id}, {desc:updatedDesc}, {
+            await Note.findOneAndUpdate({_id:note_id,author: req.user.id}, {desc:updatedDesc}, {
                 returnOriginal: false
               }).then((updatedNote) => {
                 return res.json({ "data": updatedNote, "tag": true })
@@ -71,10 +75,11 @@ const UserController = {
         }
     },
 
+
     deleteNote: async (req, res) => {
         try {
             const note_id=req.params.id;
-            await Note.findOneAndDelete({_id:note_id}).then((note) => {
+            await Note.findOneAndDelete({_id:note_id,author: req.user.id}).then((note) => {
                 if(note)
                     return res.json({ "message":"Note deleted", "tag": true })
                 return res.json({ "message":"Note not found", "tag": false })
@@ -90,10 +95,55 @@ const UserController = {
     },
 
 
+    shareNote: async (req, res) => {
+        try {
+            const note_id=req.params.id;
+            const shareWithEmail=req.body.email;
+            const note=await Note.findOne({_id:note_id,owner:req.user.id});
+            if(note){
+                const shareWith=await User.findOne({email:shareWithEmail});
+                if(shareWith){
+                    let shareWithId=shareWith._id;
+                    let allowedAccess=note.allowedAccess;
+                    let isPresent=allowedAccess.find(((allowedAccessId)=>allowedAccessId==shareWithId));
+                    if(isPresent){
+                        return res.json({tag:true,message:"Already shared"})
+                    }
+                    else{
+                        allowedAccess.push(shareWithId);
+                        note.allowedAccess=allowedAccess;
+                        await note.save().then(() => {
+                            return res.json({ "data": note,"message":"Note shared", "tag": true })
+                        }).catch(error => {
+                            return res.json({
+                                "error": error, "tag": false
+                            })
+                        })
+                    }
+                }
+                else{
+                    return res.json({tag:false,message:"User not found"})
+                }
+            }
+            else return res.json({tag:false,message:"Note not found or unauthorized"});
 
+            await Note.findOneAndDelete({_id:note_id}).then((note) => {
+                if(note)
+                    return res.json({ "message":"Note deleted", "tag": true })
+                return res.json({ "message":"Note not found", "tag": false })
+            }).catch(error => {
+                return res.json({
+                    "error": error, "tag": false
+                })
+            })
+        }
+        catch (err) {
+            return res.json({ "message": err, "tag": false })
+        }
+    }
 }
 
-module.exports = UserController;
+module.exports = NoteController;
 
 
 

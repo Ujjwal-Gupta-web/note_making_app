@@ -16,4 +16,5 @@ router.post('/api/notes',authMiddleware,NoteController.addNote)
 router.put('/api/notes/:id',authMiddleware,NoteController.updtateNote)
 router.delete('/api/notes/:id',authMiddleware,NoteController.deleteNote)
 router.post('/api/notes/:id/share',authMiddleware,NoteController.shareNote)
-router.get('/api/search/q=',authMiddleware,NoteController.searchNote);
+
+module.exports=router;
