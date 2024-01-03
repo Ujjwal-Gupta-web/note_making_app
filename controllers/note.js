@@ -39,8 +39,9 @@ const NoteController = {
             let allowedAccess = [];
             allowedAccess.push(author);
             const desc = req.body.desc;
+            const title=req.body.title;
             const newNote = new Note({
-                desc, author, allowedAccess
+                desc,title, author, allowedAccess
             })
             await newNote.save().then(() => {
                 return res.json({ "data": newNote, "tag": true })
@@ -60,7 +61,11 @@ const NoteController = {
         try {
             const note_id=req.params.id;
             const updatedDesc=req.body.desc;
-            await Note.findOneAndUpdate({_id:note_id,author: req.user.id}, {desc:updatedDesc}, {
+            const updatedTitle=req.body.title;
+            let updateToBeDone={};
+            if(updatedTitle) updateToBeDone.title=updatedTitle;
+            if(updatedDesc) updateToBeDone.desc=updatedDesc;
+            await Note.findOneAndUpdate({_id:note_id,author: req.user.id}, updateToBeDone, {
                 returnOriginal: false
               }).then((updatedNote) => {
                 return res.json({ "data": updatedNote, "tag": true })
