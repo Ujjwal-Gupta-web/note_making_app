@@ -8,6 +8,7 @@
 
 const express = require("express");
 const authMiddleware = require("../middlewares/authMiddleware");
+const NoteController=require("../controllers/note")
 const router = express.Router();
 
 router.get('/api/notes',authMiddleware,NoteController.getAllNotes)
