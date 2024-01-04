@@ -1,4 +1,2 @@
-2024-01-04T13:54:06.589Z info: Received a GET request for http://localhost:8000/api/notes/
-2024-01-04T13:54:50.185Z info: Received a GET request for /api/notes/
-2024-01-04T13:55:01.030Z info: Received a GET request for /api/notes/6595b463488d0453ca2f5607
-2024-01-04T13:57:26.592Z error: Received a GET request for /api/notes/6595b463488d0453ca2f5607
+2024-01-04T14:03:15.332Z info: Received a GET request for /api/notes/6595b463488d0453ca2f56071
+2024-01-04T14:05:40.218Z info: Received a GET request for /api/notes/6595b463488d0453ca2f56071

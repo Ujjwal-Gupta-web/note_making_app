@@ -2,6 +2,7 @@ const Note = require('../models/Note');
 const User = require('../models/User');
 var bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const logger=require('../utility/logger')
 
 const NoteController = {
 
@@ -15,8 +16,8 @@ const NoteController = {
             })
         }
         catch (err) {
-            console.log(err);
-            return res.json({ "message": err, "tag": false })
+            logger.error(err);
+            return res.json({ "message": err?.message, "tag": false })
         }
     },
 
@@ -36,7 +37,8 @@ const NoteController = {
             return res.json({ data: {note:note}, tag: true });
         }
         catch (err) {
-            return res.json({ "message": err, "tag": false })
+            logger.error(err);
+            return res.json({ "message": err?.message, "tag": false })
         }
     },
 
@@ -55,13 +57,15 @@ const NoteController = {
             await newNote.save().then(() => {
                 return res.json({ "data": newNote, "tag": true })
             }).catch(error => {
+                logger.error(error);
                 return res.json({
-                    "error": error, "tag": false
+                    "error": error?.message, "tag": false
                 })
             })
         }
         catch (err) {
-            return res.json({ "message": err, "tag": false })
+            logger.error(err);
+            return res.json({ "message": err?.message, "tag": false })
         }
     },
 
@@ -79,13 +83,15 @@ const NoteController = {
               }).then((updatedNote) => {
                 return res.json({ "data": updatedNote, "tag": true })
             }).catch(error => {
+                logger.error(error);
                 return res.json({
-                    "error": error, "tag": false
+                    "error": error?.message, "tag": false
                 })
             })
         }
         catch (err) {
-            return res.json({ "message": err, "tag": false })
+            logger.error(err);
+            return res.json({ "message": err?.message, "tag": false })
         }
     },
 
@@ -98,13 +104,15 @@ const NoteController = {
                     return res.json({ "message":"Note deleted", "tag": true })
                 return res.json({ "message":"Note not found", "tag": false })
             }).catch(error => {
+                logger.error(error);
                 return res.json({
-                    "error": error, "tag": false
+                    "error": error?.message, "tag": false
                 })
             })
         }
         catch (err) {
-            return res.json({ "message": err, "tag": false })
+            logger.error(err);
+            return res.json({ "message": err?.message, "tag": false })
         }
     },
 
@@ -141,8 +149,8 @@ const NoteController = {
             // Send response after updating the note
             return res.json({ data: note, message: "Note shared", tag: true });
         } catch (err) {
-            console.error(err);
-            return res.json({ message: err.message, tag: false });
+            logger.error(err);
+            return res.json({ message: err?.message, tag: false });
         }
     }
 }

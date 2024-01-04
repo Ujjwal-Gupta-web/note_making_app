@@ -1,3 +1,4 @@
+const logger=require('../utility/logger')
 const Note = require('../models/Note');
 const User = require('../models/User');
 var bcrypt = require('bcryptjs');
@@ -18,6 +19,7 @@ const SearchController = {
             return res.json({tag:true,data:searchResults});
         }
         catch (err) {
+            logger.error(err);
             return res.json({ "message": err, "tag": false })
         }
     },

@@ -1,6 +1,7 @@
 const User = require('../models/User');
 var bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const logger=require('../utility/logger')
 
 const UserController = {
     login: async (req, res) => {
@@ -22,6 +23,7 @@ const UserController = {
             }
         }
         catch (err) {
+            logger.error(err);
             return res.json({ "message": err, "tag": false })
         }
 
@@ -45,13 +47,15 @@ const UserController = {
                 await user.save().then((doc) => {
                     return res.json({ "message": "SignUp Success", tag: true })
                 }).catch((err) => { 
+                    logger.error(err);
                     return res.json({
-                        "error": error, "tag": false
+                        "error": err?.message, "tag": false
                     }) 
                 })
             }
         }
         catch (err) {
+            logger.error(err);
             return res.json({ "error": err, "tag": false })
         }
 
