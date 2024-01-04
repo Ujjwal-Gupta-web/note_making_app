@@ -53,7 +53,7 @@ const NoteController = {
             const newNote = new Note({
                 desc,title, author, allowedAccess
             })
-            console.log(newNote);
+            // console.log(newNote);
             await newNote.save().then(() => {
                 return res.json({ "data": newNote, "tag": true })
             }).catch(error => {
@@ -152,7 +152,21 @@ const NoteController = {
             logger.error(err);
             return res.json({ message: err?.message, tag: false });
         }
-    }
+    },
+
+    getRandomNote:async(req,res)=>{
+        try {
+            const randomNote = await Note.aggregate([{ $sample: { size: 1 } }]);
+            if (randomNote && randomNote.length > 0) {
+              return res.json({ "tag": true,note:randomNote[0] })
+            } else {
+              return res.json({tag:false,message:"No note found"})
+            }
+          } catch (error) {
+              logger.error(err);
+              return res.json({ "error": error?.message, "tag": false })
+          }
+        }
 }
 
 module.exports = NoteController;

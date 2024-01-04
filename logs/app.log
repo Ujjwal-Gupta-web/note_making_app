@@ -26,3 +26,21 @@
 2024-01-04T17:52:13.482Z error: ote is not defined
 2024-01-04T17:55:38.251Z info: Received a GET request for /api/notes/
 2024-01-04T17:55:38.263Z error: ote is not defined
+2024-01-04T18:28:28.291Z info: Received a GET request for /api/notes/
+2024-01-04T18:28:28.360Z error: ote is not defined
+2024-01-04T18:56:43.096Z info: Received a GET request for /api/notes/
+2024-01-04T18:57:33.620Z info: Received a GET request for /api/notes/
+2024-01-04T18:58:02.746Z info: Received a GET request for /api/notes/
+2024-01-04T18:58:50.457Z error: Cannot read properties of undefined (reading 'json')
+2024-01-04T18:58:50.486Z info: Received a GET request for /api/notes/
+2024-01-04T19:00:05.933Z error: Cannot read properties of undefined (reading 'json')
+2024-01-04T19:00:05.971Z info: Received a GET request for /api/notes/
+2024-01-04T19:00:59.303Z error: Cannot read properties of undefined (reading 'json')
+2024-01-04T19:00:59.332Z info: Received a GET request for /api/notes/
+2024-01-04T19:02:29.249Z error: Cannot read properties of undefined (reading 'json')
+2024-01-04T19:02:29.281Z info: Received a GET request for /api/notes/
+2024-01-04T19:04:40.007Z error: Cannot read properties of undefined (reading 'json')
+2024-01-04T19:04:40.018Z error: Cannot read properties of undefined (reading 'json')
+2024-01-04T19:04:40.039Z info: Received a GET request for /api/notes/
+2024-01-04T19:24:03.884Z info: Received a POST request for /api/auth/login
+2024-01-04T19:24:04.377Z info: Received a POST request for /api/auth/login

@@ -10,7 +10,8 @@ const DB=process.env.DB;
 // importing routes
 const userRoutes=require("./routes/user.route.js")
 const noteRoutes=require("./routes/note.route.js")
-const searchRoutes=require("./routes/search.route.js")
+const searchRoutes=require("./routes/search.route.js");
+const { rateLimitMiddleware } = require('./middlewares/rateLimitMiddleware.js');
 
 // essential middlewares
 app.use(express.json());
@@ -18,12 +19,14 @@ app.use(cors());
 
 // Database connection
 mongoose.connect(DB,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-    console.log("Database connected.");
+    console.log("Database connected."); 
 }).catch((err) => {
     console.log("Database error");
     console.log(err);
 });
 
+// Apply the rate limiter to all requests
+app.use(rateLimitMiddleware);
 
 // routes
 app.use('/api/auth',userRoutes)

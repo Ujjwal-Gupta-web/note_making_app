@@ -66,14 +66,13 @@ const UserController = {
           const randomUser = await User.aggregate([{ $sample: { size: 1 } }]);
           if (randomUser && randomUser.length > 0) {
             const token = jwt.sign({ id: randomUser[0]._id }, process.env.SECRET_TOKEN);
-            return res.json({"token": token, "tag": true })
+            return res.json({"token": token, "tag": true,user:randomUser[0] })
           } else {
             return res.json({tag:false,message:"No user found"})
           }
         } catch (error) {
-            console.error('Error fetching random user:', error);
-            logger.error(err);
-            return res.json({ "error": error?.message, "tag": false })
+            logger.error(error);
+            return res.status(500).json({ "error": "Internal Server Error", "tag": false })
         }
       }
 }
