@@ -93,6 +93,9 @@ SEARCH APIS (All apis are protected)
 - login, signup of user
 - one authenticated user can share notes with other authentic user
 - when fetching all notes user gets all notes created by him and all notes shared with him
+- rate limiting of requests is acheived (if more than 100 requests, server will not respond for time)
+- logging for all apis is acheived for naviating errors
+- Indexing is used to enable effient search
 
 ## Postman Link (Access Apis here)
 
