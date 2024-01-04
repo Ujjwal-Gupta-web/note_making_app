@@ -1,2 +1,26 @@
 2024-01-04T14:03:15.332Z info: Received a GET request for /api/notes/6595b463488d0453ca2f56071
 2024-01-04T14:05:40.218Z info: Received a GET request for /api/notes/6595b463488d0453ca2f56071
+2024-01-04T14:06:12.516Z info: Received a GET request for /api/notes/6595b463488d0453ca2f56071
+2024-01-04T14:06:12.548Z error: Cast to ObjectId failed for value "6595b463488d0453ca2f56071" (type string) at path "_id" for model "Notes"
+2024-01-04T17:05:55.680Z info: Received a GET request for /api/notes/
+2024-01-04T17:07:39.320Z info: Received a GET request for /api/notes/
+2024-01-04T17:09:06.809Z info: Received a GET request for /api/notes/
+2024-01-04T17:09:44.266Z info: Received a GET request for /api/notes/
+2024-01-04T17:10:01.901Z info: Received a GET request for /api/notes/
+2024-01-04T17:24:18.396Z info: Received a GET request for /api/notes/
+2024-01-04T17:24:48.864Z info: Received a GET request for /api/notes/
+2024-01-04T17:28:31.786Z info: Received a GET request for /api/notes/
+2024-01-04T17:30:43.821Z info: Received a GET request for /api/notes/
+2024-01-04T17:32:48.306Z info: Received a GET request for /api/notes/
+2024-01-04T17:34:21.884Z info: Received a GET request for /api/notes/
+2024-01-04T17:40:45.047Z info: Received a GET request for /api/notes/
+2024-01-04T17:41:14.008Z info: Received a GET request for /api/notes/
+2024-01-04T17:43:52.236Z info: Received a GET request for /api/notes/
+2024-01-04T17:44:45.812Z info: Received a GET request for /api/notes/
+2024-01-04T17:45:24.038Z info: Received a GET request for /api/notes/
+2024-01-04T17:46:04.392Z info: Received a GET request for /api/notes/
+2024-01-04T17:46:21.556Z info: Received a GET request for /api/notes/
+2024-01-04T17:51:19.416Z info: Received a GET request for /api/notes/
+2024-01-04T17:51:19.428Z error: ote is not defined
+2024-01-04T17:52:13.473Z info: Received a GET request for /api/notes/
+2024-01-04T17:52:13.482Z error: ote is not defined

@@ -9,9 +9,9 @@ const NoteController = {
     getAllNotes: async (req, res) => {
         try {
             const notes = await Note.find({ author: req.user.id });
-            const sharedWithMe =  await Note.findOne({ $and:[{allowedAccess: { $in: [req.user.id] }},{author:{$ne:req.user.id}}]}).select("-allowedAccess").populate({path:'author',select:'email'});
+            const sharedWithMe =  await Note.find({ $and:[{allowedAccess: { $in: [req.user.id] }},{author:{$ne:req.user.id}}]}).select("-allowedAccess").populate({path:'author',select:'email'});
             return res.json({
-                data: { notes:notes, sharedWithMe:sharedWithMe?sharedWithMe:[] },
+                data: { notes:notes, sharedWithMe:sharedWithMe },
                 tag: true
             })
         }
