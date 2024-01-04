@@ -15,8 +15,7 @@ const SearchController = {
                     {$or:[{author:req.user.id},{allowedAccess: { $in: [req.user.id] }}]}, {$text: { $search: query } }
                 ]
             }).populate({path:'author',select:'email'}).populate({path:'allowedAccess',select:'email'});;
-            console.log(searchResults)
-            return res.json({tag:true,data:searchResults});
+            return res.status(200).json({tag:true,data:searchResults});
         }
         catch (err) {
             logger.error(err);

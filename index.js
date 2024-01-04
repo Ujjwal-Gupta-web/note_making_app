@@ -36,4 +36,4 @@ app.use('/api/search',searchRoutes)
 
 app.listen(PORT,()=>console.log(`Server up and running ${PORT}`));
 
-module.exports={app}
+module.exports = {app};

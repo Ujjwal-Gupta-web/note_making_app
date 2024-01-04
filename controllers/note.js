@@ -8,7 +8,7 @@ const NoteController = {
 
     getAllNotes: async (req, res) => {
         try {
-            const notes = await Note.find({ author: req.user.id });
+            const notes = await Note.find({ author: req.user.i });
             const sharedWithMe =  await Note.find({ $and:[{allowedAccess: { $in: [req.user.id] }},{author:{$ne:req.user.id}}]}).select("-allowedAccess").populate({path:'author',select:'email'});
             return res.json({
                 data: { notes:notes, sharedWithMe:sharedWithMe },
@@ -45,17 +45,18 @@ const NoteController = {
 
     addNote: async (req, res) => {
         try {
+            const receicedNoteDets={...req.body};
             const author = req.user.id;
-            let allowedAccess = [];
-            allowedAccess.push(author);
-            const desc = req.body.desc;
-            const title=req.body.title;
+            const allowedAccess=[];
+            allowedAccess.push(author)
+            receicedNoteDets.allowedAccess=allowedAccess;
+            receicedNoteDets.author=author;
             const newNote = new Note({
-                desc,title, author, allowedAccess
+                ...receicedNoteDets
             })
             // console.log(newNote);
             await newNote.save().then(() => {
-                return res.json({ "data": newNote, "tag": true })
+                return res.status(201).json({ "data": newNote, "tag": true })
             }).catch(error => {
                 logger.error(error);
                 return res.json({
@@ -149,24 +150,10 @@ const NoteController = {
             // Send response after updating the note
             return res.json({ data: note, message: "Note shared", tag: true });
         } catch (err) {
-            logger.error(err);
+            logger.error(err?.message);
             return res.json({ message: err?.message, tag: false });
         }
-    },
-
-    getRandomNote:async(req,res)=>{
-        try {
-            const randomNote = await Note.aggregate([{ $sample: { size: 1 } }]);
-            if (randomNote && randomNote.length > 0) {
-              return res.json({ "tag": true,note:randomNote[0] })
-            } else {
-              return res.json({tag:false,message:"No note found"})
-            }
-          } catch (error) {
-              logger.error(err);
-              return res.json({ "error": error?.message, "tag": false })
-          }
-        }
+    }
 }
 
 module.exports = NoteController;

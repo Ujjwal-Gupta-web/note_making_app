@@ -11,7 +11,7 @@ const UserController = {
                 bcrypt.compare(req.body.password, result.password, function (err, hashed) {
                     if (hashed === true) {
                         const token = jwt.sign({ id: result._id }, process.env.SECRET_TOKEN);
-                        return res.json({ "message": "Login success", "token": token, "tag": true })
+                        return res.status(200).json({ "message": "Login success", "token": token, "tag": true })
                     }
                     else {
                         return res.json({ "message": "Login failed", "tag": false })
@@ -19,12 +19,12 @@ const UserController = {
                 });
             }
             else {
-                return res.json({ "message": "No user exists", "tag": false })
+                return res.status(404).json({ "message": "No user exists", "tag": false })
             }
         }
         catch (err) {
             logger.error(err);
-            return res.json({ "message": err, "tag": false })
+            return res.status(500).json({ "message": err, "tag": false })
         }
 
     },
@@ -45,7 +45,7 @@ const UserController = {
                     password: hash
                 })
                 await user.save().then((doc) => {
-                    return res.json({ "message": "SignUp Success", tag: true })
+                    return res.status(201).json({userId:doc._id, "message": "SignUp Success", tag: true })
                 }).catch((err) => { 
                     logger.error(err);
                     return res.json({

@@ -8,6 +8,6 @@ const loggerMiddleware = require("../middlewares/loggerMiddleware");
 // POST ROUTES
 router.post('/login',loggerMiddleware,UserController.login)
 router.post('/signup',loggerMiddleware,UserController.signup)
-router.post('/getRandomUser',loggerMiddleware,UserController.getRandomUser)
+router.get('/getRandomUser',loggerMiddleware,UserController.getRandomUser)
 
 module.exports=router;
